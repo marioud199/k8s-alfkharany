@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: rbac-lab
+  name: view-pods-binding
+
+subjects:
+  - kind: ServiceAccount
+    name: dev-user
+    namespace: rbac-lab
+roleRef:
+  kind: Role
+  name: view-pods
+  apiGroup: rbac.authorization.k8s.io

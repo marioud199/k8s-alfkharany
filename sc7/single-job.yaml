@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+
+kind: Job
+
+metadata:
+
+  name: data-migration-job
+
+spec:
+
+  completions: 1
+
+  parallelism: 1
+
+  template:
+
+    spec:
+
+      containers:
+
+      - name: migration
+
+        image: busybox
+
+        command: ["sh", "-c", "echo 'Migrating data...' && sleep 10 && echo 'Data migration complete.'"]
+
+      restartPolicy: Never

@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: admin
+  labels:
+    app: admin
+spec:
+  containers:
+  - name: admin
+    image: ealen/echo-server:latest
+    env:
+    - name: ECHO_SERVER_BASE_PATH
+      value: "/admin"
+    ports:
+      - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin
+spec:
+  selector:
+    app: admin
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

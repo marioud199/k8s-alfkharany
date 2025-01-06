@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-deployment
+  labels:
+    app: sample-deployment
+spec:
+  selector:
+    matchLabels:
+      app: sample-deployment
+  replicas: 10
+  strategy:
+    type: Recreate
+    
+  minReadySeconds: 10
+  revisionHistoryLimit: 5
+  progressDeadlineSeconds: 600
+  template:
+    metadata:
+      labels:
+        app: sample-deployment
+    spec:
+      containers:
+        - name: sample-deployment
+          image: nginx:1.16
+          ports:
+            - containerPort: 80
+          env:
+            - name: ENVIRONMENT
+              value: "production"
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          volumeMounts:
+            - name: sample-volume
+              mountPath: /usr/share/nginx/html
+      volumes:
+          - name: sample-volume
+            emptyDir: {}
